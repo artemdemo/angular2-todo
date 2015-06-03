@@ -4,7 +4,7 @@ import {Component, View, bootstrap, For} from 'angular2/angular2';
 
 /**
  * Main tasks object.
- * Case it's global - it will allow model update in all components
+ * Case it's global - it will allow model update it in all components
  * @type {}
  */
 var tasks = [
@@ -39,8 +39,16 @@ class TasksService {
         return this.tasks;
     }
 
+    deleteTaskById( id: string ) {
+        for ( var i=0, len=tasks.length; i<len; i++ ) {
+            if ( tasks[i].id == id ) {
+                tasks.splice(i,1);
+                break;
+            }
+        }
+    }
+
     addToDo( todo: string ) {
-        console.log( this.UUID() );
         tasks.push({
             id: this.UUID(),
             name: todo,
@@ -76,7 +84,7 @@ class TasksService {
          -->
         <input #newtodo type="text" class="form-control" placeholder="Add new task">
         <span class="input-group-btn">
-            <button class="btn btn-default" type="button" (click)="addToDo( newtodo.value )">Add!</button>
+            <button class="btn btn-default" type="button" (click)="addToDo( newtodo )">Add!</button>
         </span>
     </p>
     `
@@ -91,10 +99,9 @@ class AddtodoComponent {
     }
 
     // Add to-do to the list
-    addToDo( todo ) {
-        this.tasksService.addToDo( todo );
-
-        console.log( this.tasksService.getTasks() );
+    addToDo( newtodo: HTMLInputElement ) {
+        this.tasksService.addToDo( newtodo.value );
+        newtodo.value = '';
     }
 }
 
@@ -111,9 +118,11 @@ class AddtodoComponent {
     template: `
     <addtodo></addtodo>
     <p>Tasks:</p>
-    <ul>
-     <li *for="#item of tasksService.getTasks() ">
-        {{ item.name }} <button type="button" class="btn btn-primary btn-xs" (click)="markDone()">Mark done</button>
+    <ul class="tasks-list">
+     <li class="task-item" *for="#item of tasks ">
+        {{ item.name }}
+        <button type="button" class="btn btn-primary btn-xs" (click)="markDone( item )">Mark done</button>
+        <button type="button" class="btn btn-danger btn-xs" (click)="remove( item )">Remove!</button>
      </li>
     </ul>
     `,
@@ -121,13 +130,19 @@ class AddtodoComponent {
 })
 class ToDoComponent {
     tasksService: TasksService;
+    tasks;
 
     constructor( tasksService: TasksService ) {
         this.tasksService = tasksService;
+        this.tasks = this.tasksService.getTasks();
     }
 
-    markDone() {
+    markDone( item ) {
+        console.log( item );
+    }
 
+    remove( item ) {
+        this.tasksService.deleteTaskById( item.id );
     }
 }
 

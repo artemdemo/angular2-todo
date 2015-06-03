@@ -13,7 +13,7 @@ if (typeof __metadata !== "function") __metadata = function (k, v) {
 var angular2_1 = require('angular2/angular2');
 /**
  * Main tasks object.
- * Case it's global - it will allow model update in all components
+ * Case it's global - it will allow model update it in all components
  * @type {}
  */
 var tasks = [
@@ -43,8 +43,15 @@ var TasksService = (function () {
     TasksService.prototype.getTasks = function () {
         return this.tasks;
     };
+    TasksService.prototype.deleteTaskById = function (id) {
+        for (var i = 0, len = tasks.length; i < len; i++) {
+            if (tasks[i].id == id) {
+                tasks.splice(i, 1);
+                break;
+            }
+        }
+    };
     TasksService.prototype.addToDo = function (todo) {
-        console.log(this.UUID());
         tasks.push({
             id: this.UUID(),
             name: todo,
@@ -71,9 +78,9 @@ var AddtodoComponent = (function () {
         this.tasksService = tasksService;
     }
     // Add to-do to the list
-    AddtodoComponent.prototype.addToDo = function (todo) {
-        this.tasksService.addToDo(todo);
-        console.log(this.tasksService.getTasks());
+    AddtodoComponent.prototype.addToDo = function (newtodo) {
+        this.tasksService.addToDo(newtodo.value);
+        newtodo.value = '';
     };
     AddtodoComponent = __decorate([
         angular2_1.Component({
@@ -81,7 +88,7 @@ var AddtodoComponent = (function () {
             injectables: [TasksService]
         }),
         angular2_1.View({
-            template: "\n    <p class=\"input-group\">\n        <!--\n         Creating input with new variable #new_todo that will contain reference to input\n         -->\n        <input #newtodo type=\"text\" class=\"form-control\" placeholder=\"Add new task\">\n        <span class=\"input-group-btn\">\n            <button class=\"btn btn-default\" type=\"button\" (click)=\"addToDo( newtodo.value )\">Add!</button>\n        </span>\n    </p>\n    "
+            template: "\n    <p class=\"input-group\">\n        <!--\n         Creating input with new variable #new_todo that will contain reference to input\n         -->\n        <input #newtodo type=\"text\" class=\"form-control\" placeholder=\"Add new task\">\n        <span class=\"input-group-btn\">\n            <button class=\"btn btn-default\" type=\"button\" (click)=\"addToDo( newtodo )\">Add!</button>\n        </span>\n    </p>\n    "
         }), 
         __metadata('design:paramtypes', [TasksService])
     ], AddtodoComponent);
@@ -93,8 +100,13 @@ var AddtodoComponent = (function () {
 var ToDoComponent = (function () {
     function ToDoComponent(tasksService) {
         this.tasksService = tasksService;
+        this.tasks = this.tasksService.getTasks();
     }
-    ToDoComponent.prototype.markDone = function () {
+    ToDoComponent.prototype.markDone = function (item) {
+        console.log(item);
+    };
+    ToDoComponent.prototype.remove = function (item) {
+        this.tasksService.deleteTaskById(item.id);
     };
     ToDoComponent = __decorate([
         angular2_1.Component({
@@ -102,7 +114,7 @@ var ToDoComponent = (function () {
             injectables: [TasksService]
         }),
         angular2_1.View({
-            template: "\n    <addtodo></addtodo>\n    <p>Tasks:</p>\n    <ul>\n     <li *for=\"#item of tasksService.getTasks() \">\n        {{ item.name }} <button type=\"button\" class=\"btn btn-primary btn-xs\" (click)=\"markDone()\">Mark done</button>\n     </li>\n    </ul>\n    ",
+            template: "\n    <addtodo></addtodo>\n    <p>Tasks:</p>\n    <ul class=\"tasks-list\">\n     <li class=\"task-item\" *for=\"#item of tasks \">\n        {{ item.name }}\n        <button type=\"button\" class=\"btn btn-primary btn-xs\" (click)=\"markDone( item )\">Mark done</button>\n        <button type=\"button\" class=\"btn btn-danger btn-xs\" (click)=\"remove( item )\">Remove!</button>\n     </li>\n    </ul>\n    ",
             directives: [angular2_1.For, AddtodoComponent]
         }), 
         __metadata('design:paramtypes', [TasksService])
