@@ -2,71 +2,7 @@
 
 import {Component, View, bootstrap, For} from 'angular2/angular2';
 
-/**
- * Main tasks object.
- * Case it's global - it will allow model update it in all components
- * @type {}
- */
-var tasks = [
-    {
-        id: "76c8f4c0-3646-4e3c-b4de-7edde798fe3f",
-        name: "Went to ECMAScript 6 conference",
-        done: false
-    },
-    {
-        id: "84468e23-4fca-4400-8670-09f7a8755959",
-        name: "Learn Angular 2",
-        done: false
-    },
-    {
-        id: "08c6f368-cd8b-45a5-b85f-e2a9bc106587",
-        name: "Buy book about TypeScript",
-        done: false
-    }
-];
-
-/**
- * Tasks service
- */
-class TasksService {
-    private tasks;
-
-    constructor() {
-        this.tasks = tasks;
-    }
-
-    getTasks() {
-        return this.tasks;
-    }
-
-    deleteTaskById( id: string ) {
-        for ( var i=0, len=tasks.length; i<len; i++ ) {
-            if ( tasks[i].id == id ) {
-                tasks.splice(i,1);
-                break;
-            }
-        }
-    }
-
-    addToDo( todo: string ) {
-        tasks.push({
-            id: this.UUID(),
-            name: todo,
-            done: false
-        });
-        this.tasks = tasks;
-    }
-
-    private UUID() {
-        // Otherwise, just use Math.random
-        // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16|0, v = c === 'x' ? r : (r&0x3|0x8);
-            return v.toString(16);
-    });
-}
-}
-
+import {TasksService} from 'TasksService';
 
 /**
  * Add to-do component
@@ -100,7 +36,8 @@ class AddtodoComponent {
 
     // Add to-do to the list
     addToDo( newtodo: HTMLInputElement ) {
-        this.tasksService.addToDo( newtodo.value );
+        if ( !! newtodo.value )
+            this.tasksService.addToDo( newtodo.value );
         newtodo.value = '';
     }
 }
@@ -119,9 +56,20 @@ class AddtodoComponent {
     <addtodo></addtodo>
     <p>Tasks:</p>
     <ul class="tasks-list">
-     <li class="task-item" *for="#item of tasks ">
-        {{ item.name }}
-        <button type="button" class="btn btn-primary btn-xs" (click)="markDone( item )">Mark done</button>
+     <li class="task-item" *for="#item of tasks; #i = index" [class.done]=" item.done == true ">
+         <span class="text">
+            {{ i }}.
+            {{ item.name }}
+         </span>
+         <!--
+            Pay attention to caret sign before click -  (^click)
+            That means we don't attach the handler directly to the DOM node, rather we let it bubble and be handled at the document level.
+            In other words without caret click will be stuck on <span> tag and wouldn't reach toggleDone() function
+         -->
+        <button type="button" class="btn btn-primary btn-xs" (^click)="toggleDone( item )">
+            <span [hidden] = " item.done == true ">Mark done</span>
+            <span [hidden] = " item.done != true ">Undone</span>
+        </button>
         <button type="button" class="btn btn-danger btn-xs" (click)="remove( item )">Remove!</button>
      </li>
     </ul>
@@ -137,8 +85,8 @@ class ToDoComponent {
         this.tasks = this.tasksService.getTasks();
     }
 
-    markDone( item ) {
-        console.log( item );
+    toggleDone( item ) {
+        this.tasksService.toggleDone( item.id );
     }
 
     remove( item ) {
