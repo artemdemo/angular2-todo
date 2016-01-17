@@ -1,37 +1,16 @@
-<!-- index.html -->
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Angular 2 - ToDo</title>
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <meta charset="UTF-8">
+    <title>Angular2 ToDo</title>
 
-    <script src="https://github.jspm.io/jmcriffey/bower-traceur-runtime@0.0.87/traceur-runtime.js"></script>
-    <script src="https://jspm.io/system@0.16.js"></script>
-    <script src="https://code.angularjs.org/2.0.0-alpha.23/angular2.dev.js"></script>
-    <style>
-        .tasks-list .task-item {
-            margin-bottom: 10px;
-        }
-        [hidden] { display: none }
-        li { list-style-type: none }
-        .done .text {
-            text-decoration: line-through;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="dist/css/styles.css">
 </head>
 <body>
 
-    <div class="container">
-        <div class="page-header">
-            <h1>ToDo list</h1>
-        </div>
+<todo-app>Loading...</todo-app>
 
-        <todo></todo>
-
-    </div>
-
-
-
-<script>System.import('app');</script>
-
+<script src="dist/bundle.js"></script>
 </body>
 </html>

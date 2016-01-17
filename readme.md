@@ -1,32 +1,20 @@
 #Angular 2 - ToDo
 
-ToDo project. It is ready to start out of the box
+Simple ToDo project.
 
-## How to install TypeScript
 
-In your project folder:
+## Lets go
 
-1.
 ```
-npm install -g tsd
+$ npm run setup
 ```
 
-2.
 ```
-tsd query angular2 --action install
-```
-
-3.
-```
-npm install -g typescript@^1.5.0-beta
+$ npm run build && npm run watch
 ```
 
-4.
-```
-touch app.ts index.html
-```
 
-5.
-```
-tsc --watch -m commonjs -t es5 --emitDecoratorMetadata app.ts
-```
+## Useful links
+
+* Angular 2 Observable Data Services 
+  https://coryrylan.com/blog/angular-2-observable-data-services
