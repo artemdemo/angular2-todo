@@ -13,6 +13,7 @@ $ npm run setup
 $ npm run build && npm run watch
 ```
 
+![alt tag](https://github.com/artemdemo/angular2-todo/blob/master/angular2-todo.png)
 
 ## Useful links
 
