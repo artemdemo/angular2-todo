@@ -1,5 +1,4 @@
 import {Component, View, Inject} from 'angular2/core';
-import {NgFor} from 'angular2/common';
 
 import {TasksService, ITask} from '../services/TasksService';
 import {NewTask} from "./NewTask";
@@ -8,7 +7,7 @@ import {NewTask} from "./NewTask";
     selector: 'todo-menu'
 })
 @View({
-    directives: [NgFor, NewTask],
+    directives: [NewTask],
     template: `
     <div class="pure-menu">
         <span class="pure-menu-heading">ToDo List</span>

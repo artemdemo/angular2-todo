@@ -4,7 +4,6 @@ import 'reflect-metadata';
 
 import {bootstrap} from 'angular2/platform/browser';
 import {provide, enableProdMode} from 'angular2/core';
-import {ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
 
 import {TodoApp} from './TodoApp';
 import {TasksService} from './services/TasksService';
@@ -13,7 +12,5 @@ import {TasksService} from './services/TasksService';
 // enableProdMode();
 
 bootstrap(TodoApp, [
-    TasksService,
-    ROUTER_PROVIDERS,
-    provide(LocationStrategy, {useClass: HashLocationStrategy})
+    TasksService
 ]);

@@ -1,5 +1,4 @@
 import {Component, View, Inject} from 'angular2/core';
-import {NgIf} from 'angular2/common';
 
 import {TasksService, ITask} from '../services/TasksService';
 
@@ -7,7 +6,6 @@ import {TasksService, ITask} from '../services/TasksService';
     selector: 'task-view'
 })
 @View({
-    directives: [NgIf],
     template: `
     <div *ngIf="selectedTask">
         <h4>{{selectedTask.name}}</h4>
