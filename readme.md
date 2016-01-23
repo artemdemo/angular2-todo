@@ -6,10 +6,6 @@ Simple ToDo project.
 ## Lets go
 
 ```
-$ npm run setup
-```
-
-```
 $ npm run build && npm run watch
 ```
 
