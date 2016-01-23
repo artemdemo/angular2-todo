@@ -1,25 +1,10 @@
-@import (inline) '../../node_modules/purecss/build/pure-min.css';
-@import 'buttons';
+@import (inline) '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import (inline) '../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css';
 
 .container {
-    max-width: 980px;
-    margin: 20px auto 0 auto;
+    margin: 20px auto;
 }
 
-.pure-menu-item {
-    &.done .pure-menu-link {
-        text-decoration: line-through;
-    }
-}
-
-.pure-menu-link {
-    cursor: pointer;
-}
-
-.add-task-form {
-    margin-top: 30px;
-
-    legend {
-        color: gray
-    }
+.task-done {
+    text-decoration: line-through;
 }

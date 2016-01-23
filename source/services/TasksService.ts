@@ -5,44 +5,29 @@ export interface ITask {
     id: string;
     name: string;
     description: string;
-    done: boolean
+    done: boolean;
 }
 
 @Injectable()
 export class TasksService {
-    selectedTask:Observable<ITask>;
+
+    public tasks: Observable<ITask>;
+    private _tasksObserver: any;
+    private _tasks: ITask[];
+
+    public selectedTask: Observable<ITask>;
     private _selectedTaskObserver: any;
 
-    tasks:Observable<ITask[]>;
-    private _tasksObservable: any;
-    private _tasks:ITask[] = null;
-
     constructor() {
-        this.setDefaultTasks();
+        this.setDefaultTask();
 
-        // Create Observable Stream to output our data
         this.selectedTask = new Observable(observer =>
             this._selectedTaskObserver = observer);
+
         this.tasks = new Observable(observer =>
-            this._tasksObservable = observer);
+            this._tasksObserver = observer);
     }
 
-    /**
-     * Mark task as done
-     * @param taskId
-     */
-    toggleDone(taskId: string) {
-        this._tasks.forEach((task, i) => {if(task.id == taskId){
-            this._tasks[i].done = ! task.done;
-        }});
-        this._tasksObservable.next(this._tasks);
-    }
-
-    /**
-     * Add task to the list of tasks
-     * @param taskName
-     * @param description
-     */
     addTask(taskName: string, description: string = '') {
         this._tasks.push({
             id: this.UUID(),
@@ -50,28 +35,32 @@ export class TasksService {
             description: description,
             done: false
         });
-        this._tasksObservable.next(this._tasks);
+        this._tasksObserver.next(this._tasks);
     }
 
-    selectTask(taskId: string) {
-        this._tasks.forEach((task) => {if(task.id == taskId){
-            this._selectedTaskObserver.next(task);
-        }});
+    toggleDone(taskId: string) {
+        this._tasks.forEach((task: ITask, i) => {
+            if(task.id == taskId) {
+                this._tasks[i].done = ! task.done;
+            }
+        });
+        this._tasksObserver.next(this._tasks);
+    }
+
+    selectTask(task) {
+        this._selectedTaskObserver.next(task);
     }
 
     removeTask(taskId: string) {
         this._tasks = this._tasks.filter(task => task.id != taskId);
-        this._tasksObservable.next(this._tasks);
+        this._tasksObserver.next(this._tasks);
     }
 
     fetchTasks() {
-        this._tasksObservable.next(this._tasks);
+        this._tasksObserver.next(this._tasks);
     }
 
-    /**
-     * Set default tasks
-     */
-    private setDefaultTasks() {
+    private setDefaultTask() {
         this._tasks = [
             {
                 id: "47665aae-4079-45ee-a789-e8145e1cde1e",
@@ -91,14 +80,9 @@ export class TasksService {
                 description: "TypeScript Revealed is a quick 100-page guide to Anders Hejlsberg's new take on JavaScript. With this brief, fast-paced introduction to TypeScript, .NET, Web and Windows 8 application developers who are already familiar with JavaScript will easily get up to speed with TypeScript",
                 done: true
             }
-        ]
+        ];
     }
 
-    /**
-     * Generate UUID
-     * @source http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/2117523#2117523
-     * @returns {string}
-     */
     private UUID() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
             /[xy]/g,
@@ -107,5 +91,4 @@ export class TasksService {
                 return v.toString(16);
             });
     }
-
 }

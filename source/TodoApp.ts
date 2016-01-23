@@ -1,27 +1,23 @@
-import {Component, View, Inject} from 'angular2/core';
-
-import {TodoMenu} from './components/TodoMenu';
-import {TaskView} from './components/TaskView';
+import {Component, View} from 'angular2/core';
+import {TodoList} from './components/TodoList';
+import {TodoView} from './components/TodoView';
 
 @Component({
     selector: 'todo-app'
 })
 @View({
-    directives: [TodoMenu, TaskView],
+    directives: [TodoList, TodoView],
     template: `
-    <div class="container">
-        <div class="pure-g">
-            <div class="pure-u-2-5">
-                <todo-menu></todo-menu>
+        <div class="row">
+            <div class="col-sm-6">
+                <todo-list></todo-list>
             </div>
-            <div class="pure-u-3-5">
-                <task-view></task-view>
+            <div class="col-sm-6">
+                <todo-view></todo-view>
             </div>
         </div>
-    </div>
     `
 })
 export class TodoApp {
-    constructor() {
-    }
+    constructor() {}
 }
