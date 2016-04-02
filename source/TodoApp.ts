@@ -1,11 +1,9 @@
-import {Component, View} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {TodoList} from './components/TodoList';
 import {TodoView} from './components/TodoView';
 
 @Component({
-    selector: 'todo-app'
-})
-@View({
+    selector: 'todo-app',
     directives: [TodoList, TodoView],
     template: `
         <div class="row">

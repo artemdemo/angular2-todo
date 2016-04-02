@@ -1,12 +1,10 @@
-import {Component, View, Inject} from 'angular2/core';
+import {Component, Inject} from 'angular2/core';
 import {NewTodo} from './NewTodo';
 
 import {TasksService} from '../services/TasksService';
 
 @Component({
-    selector: 'todo-list'
-})
-@View({
+    selector: 'todo-list',
     directives: [NewTodo],
     template: `
         <ul class="nav nav-pills nav-stacked">

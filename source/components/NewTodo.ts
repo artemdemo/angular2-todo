@@ -1,12 +1,10 @@
-import {Component, View, Inject} from 'angular2/core';
+import {Component, Inject} from 'angular2/core';
 
 import {TasksService, ITask} from '../services/TasksService';
 import {Task} from '../Task';
 
 @Component({
-    selector: 'new-todo'
-})
-@View({
+    selector: 'new-todo',
     template: `
         <form class="form-horizontal"
               (ngSubmit)="addNewTask()">
